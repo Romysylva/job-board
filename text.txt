@@ -1,0 +1,131 @@
+<header
+      className=" sticky top-0 z-20
+                  bg-purple-100 text-purple-800
+                  w-full h-12 md:h-auto
+                  dark:text-purple-100 dark:bg-slate-800 shadow-md dark:shadowzinc-700"
+    >
+      <div
+        className=" flex flex-row justify-between md:items-end
+                    px-5 md:px-10 py-2"
+      >
+        <div className="md:hidden" onClick="toggleMenu('open')">
+          <ion-icon size="large" name="menu-outline"></ion-icon>
+        </div>
+        <div className="relative">
+          <a href="index.html">
+            <div
+              className=" absolute top-0 z-10
+                h-16 w-16 md:h-24 md:w-24 rounded-full
+                outline-4 outline-dotted outline-purple-700
+                dark:outline-purple-300 animate-rotating
+                duration-500 ease-out hover:animate-none
+                cursor-pointer"
+            ></div>
+            {/* <img
+              src="/src/images/logo.png"
+              className="h-16 w-16 md:h-24 md:w-24 z-20 "
+            /> */}
+          </a>
+        </div>
+        <div className="flex items-start md:items-center">
+          <div
+            className=" hidden md:grid grid-cols-6 gap-x-10
+grow items-stretch place-content-center
+justify-items-center px-5 max-w-7xl"
+          >
+            <a href="index.html">
+              <div className=" menu-item border-b-4 border-purple-400">
+                Home
+              </div>
+            </a>
+            <a href="menu.html">
+              <div className="menu-item">Menu</div>
+            </a>
+            <a href="gallery.html">
+              <div className="menu-item">Gallery</div>
+            </a>
+            <a href="blogs.html">
+              <div className="menu-item">Blogs</div>
+            </a>
+            <a href="contact_us.html">
+              <div className="menu-item">Contact us</div>
+            </a>
+            <a href="faq.html">
+              <div className="menu-item">FAQ</div>
+            </a>
+          </div>
+          <div className="md:mb-1">
+            <div
+              id="light"
+              className="hidden cursor-pointer place-self-center"
+              onclick="changeTheme('light')"
+              title="Normal mode"
+            >
+              <ion-icon name="sunny-outline">&times;</ion-icon>
+            </div>
+            <div
+              id="dark"
+              className="hidden cursor-pointer place-self-center"
+              onclick="changeTheme('dark')"
+              title="Dark mode"
+            >
+              <ion-icon name="moon"></ion-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+      <aside
+        id="drawer"
+        class=" absolute top-0 z-50 bg-purple-100 text-purple-800
+md:hidden
+min-h-screen min-w-full overflow-y-hidden
+dark:text-purple-100 dark:bg-slate-800
+-translate-x-[100%] duration-200 ease-in-out"
+      >
+        <div class="flex flex-col py-10 px-5">
+          <div class="w-full flex justify-end">
+            <div class="w-4/6 flex justify-between">
+              <div class="relative">
+                <div
+                  class=" absolute top-0 h-16 w-16 md:h-24 md:w-24
+rounded-full outline-4 outline-dotted
+outline-purple-700
+dark:outline-purple-300
+animate-rotating duration-500 ease-out"
+                ></div>
+                {/* <img
+                  src="/src/images/logo.png"
+                  class="h-16 w-16 md:h-24 md:w-24 z-20"
+                /> */}
+              </div>
+              <div class="md:hidden" onclick="toggleMenu('close')">
+                <ion-icon size="large" name="close-outline"></ion-icon>
+              </div>
+            </div>
+          </div>
+          <ul
+            class=" flex flex-col divide-y
+divide-purple-200 font-jost gap-y-4 m-10 "
+          >
+            <a href="index.html">
+              <li class="text-base font-bold py-3">Home</li>
+            </a>
+            <a href="menu.html">
+              <li class="text-base py-3">Menu</li>
+            </a>
+            <a href="gallery.html">
+              <li class="text-base py-3">Gallery</li>
+            </a>
+            <a href="blogs.html">
+              <li class="text-base py-3">Blogs</li>
+            </a>
+            <a href="contact_us.html">
+              <li class="text-base py-3">Contact us</li>
+            </a>
+            <a href="faq.html">
+              <li class="text-base py-3">FAQ</li>
+            </a>
+          </ul>
+        </div>
+      </aside>
+    </header>
