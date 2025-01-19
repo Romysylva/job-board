@@ -22,9 +22,12 @@ import GlobalLoading from "./context/global/GlobalLoading";
 import { UserProvider } from "./context/users/useUser";
 import Layout from "./page/Layout";
 import Footer from "./components/Footer/Footer";
+import JobPage from "./jobs/loading/JobPage";
+// import JobDetails from "./jobs/JobDetailPage";
+import DetailedPage from "./jobs/Page";
 // Import your components
 
-const App = (user) => {
+const App = () => {
   return (
     <ThemeProvider>
       <UserProvider>
@@ -43,7 +46,7 @@ const App = (user) => {
             {/* Protected Routes (Accessible when logged in) */}
             <Route path="/" element={<HomePage />} />
             <Route path="/company/:id" element={<CompanyPage />} />
-            <Route path="/job/:id" element={<JobDetailsPage />} />
+            {/* <Route path="/job/:id" element={<JobDetailsPage />} /> */}
             <Route path="/profile" element={<UserProfilePage />} />
 
             {/* Admin Routes (Only for admin) */}
@@ -51,7 +54,8 @@ const App = (user) => {
             <Route path="/register" element={<RegistrationForm />} />
             <Route path="/login" element={<LoginPage />} />
 
-            {/* <Route path="/dashboard" element={<AdminDashboard />} /> */}
+            <Route path="/jobs" element={<JobPage />} />
+            <Route path="/jobs/:id" element={<DetailedPage />} />
             <Route
               path="/dashboard"
               element={
