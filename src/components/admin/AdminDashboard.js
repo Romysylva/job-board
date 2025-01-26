@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Router } from "react-router-dom";
+
 import Sidebar from "./Sidebar";
 import DashboardMain from "./DashboardMain";
 import ManagementSection from "./ManagementSection";
@@ -8,8 +8,9 @@ import ApplicationsList from "../applicaions/ApplicationList";
 
 const AdminDashboard = () => {
   return (
-    <div className="min-h-screen flex w-screen flex-col">
+    <div className="min-h-screen flex w-screen flex-col admin-dashboard">
       <Header />
+
       <div className="flex flex-grow">
         {/* Sidebar for Admin Navigation */}
         {/* <Router> */}
@@ -28,3 +29,15 @@ const AdminDashboard = () => {
 };
 
 export default AdminDashboard;
+
+// const AdminDashboard = () => {
+
+//   return (
+//     <div className="admin-dashboard">
+//       <h2 className="text-2xl font-bold mb-4">Admin Dashboard</h2>
+
+//     </div>
+//   );
+// };
+
+// export default AdminDashboard;

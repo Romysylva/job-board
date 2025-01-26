@@ -58,15 +58,15 @@ const DynamicDrawer = ({ menuItems, onSelectedTab, children }) => {
   };
 
   const drawer = (
-    <div>
+    <div className="dark:bg-gray-900  min-h-screen">
       <Toolbar />
-      <div className="text-xl font-bold text-blue-600 dark:text-blue-400 -mt-8 ml-8 mb-8">
+      <div className="text-xl font-bold text-blue-600 dark:text-blue-400 -mt-10 ml-10 mb-3 dark:bg-gray-900 ">
         <a href="/">JobBoard</a>
       </div>
       <Divider />
       <List>
         {menuItems.map((menuItem) => (
-          <div key={menuItem.text}>
+          <div key={menuItem.text} className="dark:bg-gray-900">
             <ListItem disablePadding>
               <ListItemButton
                 onClick={
@@ -112,7 +112,7 @@ const DynamicDrawer = ({ menuItems, onSelectedTab, children }) => {
   );
 
   return (
-    <div>
+    <div className="dark:bg-gray-900">
       <ThemeProvider theme={theme}>
         <Box sx={{ display: "flex" }}>
           <CssBaseline />
@@ -123,27 +123,29 @@ const DynamicDrawer = ({ menuItems, onSelectedTab, children }) => {
               ml: { sm: `${drawerWidth}px` },
             }}
           >
-            <Toolbar>
-              <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                edge="start"
-                onClick={handleDrawerToggle}
-                sx={{ mr: 2, display: { sm: "none" } }}
-              >
-                <MenuIcon />
-              </IconButton>
-              <Typography variant="h6" noWrap component="div">
-                {selectedTab}
-              </Typography>
-              <IconButton
-                color="inherit"
-                onClick={handleDarkModeToggle}
-                sx={{ ml: "auto" }}
-              >
-                {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
-              </IconButton>
-            </Toolbar>
+            <div className="dark:bg-gray-900">
+              <Toolbar>
+                <IconButton
+                  color="inherit"
+                  aria-label="open drawer"
+                  edge="start"
+                  onClick={handleDrawerToggle}
+                  sx={{ mr: 2, display: { sm: "none" } }}
+                >
+                  <MenuIcon />
+                </IconButton>
+                <Typography variant="h6" noWrap component="div">
+                  {selectedTab}
+                </Typography>
+                <IconButton
+                  color="inherit"
+                  onClick={handleDarkModeToggle}
+                  sx={{ ml: "auto" }}
+                >
+                  {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
+                </IconButton>
+              </Toolbar>
+            </div>
           </AppBar>
           <Box
             component="nav"

@@ -129,3 +129,430 @@ divide-purple-200 font-jost gap-y-4 m-10 "
         </div>
       </aside>
     </header>
+
+
+
+
+
+
+
+
+
+      // const [stats, setStats] = useState({
+  //   jobs: 0,
+  //   users: 0,
+  //   applications: 0,
+  // });
+
+  // useEffect(() => {
+  //   const fetchStats = async () => {
+  //     try {
+  //       const token = localStorage.getItem("token");
+  //       const response = await axios.get(
+  //         "http://localhost:5000/api/admin/stats",
+  //         {
+  //           headers: { Authorization: `Bearer ${token}` },
+  //         }
+  //       );
+  //       setStats(response.data);
+  //     } catch (err) {
+  //       console.error("Error fetching stats:", err);
+  //     }
+  //   };
+
+  //   fetchStats();
+  // }, []);
+
+  // const data = useMemo(
+  //   () => ({
+  //     labels: ["Jobs", "Users", "Applications"],
+  //     datasets: [
+  //       {
+  //         label: "Activity Stats",
+  //         data: [stats.jobs, stats.users, stats.applications],
+  //         backgroundColor: ["#4caf50", "#2196f3", "#ff9800"],
+  //         borderColor: ["#388e3c", "#1976d2", "#f57c00"],
+  //         borderWidth: 1,
+  //       },
+  //     ],
+  //   }),
+  //   [stats]
+  // );
+
+  // const options = useMemo(
+  //   () => ({
+  //     responsive: true,
+  //     plugins: {
+  //       legend: {
+  //         display: true,
+  //         position: "top",
+  //       },
+  //     },
+  //   }),
+  //   []
+  // );
+
+
+
+  // import {
+//   Chart as ChartJS,
+//   CategoryScale,
+//   LinearScale,
+//   BarElement,
+//   Title,
+//   Tooltip,
+//   Legend,
+// } from "chart.js";
+
+// ChartJS.register(
+//   CategoryScale,
+//   LinearScale,
+//   BarElement,
+//   Title,
+//   Tooltip,
+//   Legend
+// );
+
+
+
+// line Chart 
+
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  LineElement,
+  PointElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  LineElement,
+  PointElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
+  const [stats, setStats] = useState({
+    jobs: 0,
+    users: 0,
+    applications: 0,
+  });
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get(
+          "http://localhost:5000/api/admin/stats",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        setStats(response.data);
+      } catch (err) {
+        console.error("Error fetching stats:", err);
+      }
+    };
+
+    fetchStats();
+  }, []);
+
+  // Memoize data and options to prevent unnecessary re-renders
+  const data = useMemo(
+    () => ({
+      labels: ["Jobs", "Users", "Applications"],
+      datasets: [
+        {
+          label: "Activity Stats",
+          data: [stats.jobs, stats.users, stats.applications],
+          borderColor: "#42a5f5",
+          backgroundColor: "rgba(66, 165, 245, 0.2)",
+          borderWidth: 2,
+          pointBackgroundColor: "#1e88e5",
+          pointBorderColor: "#fff",
+          pointHoverBackgroundColor: "#fff",
+          pointHoverBorderColor: "#1e88e5",
+        },
+      ],
+    }),
+    [stats]
+  );
+
+  const options = useMemo(
+    () => ({
+      responsive: true,
+      plugins: {
+        legend: {
+          display: true,
+          position: "top",
+        },
+        tooltip: {
+          mode: "index",
+          intersect: false,
+        },
+      },
+      scales: {
+        x: {
+          display: true,
+          title: {
+            display: true,
+            text: "Categories",
+          },
+        },
+        y: {
+          display: true,
+          title: {
+            display: true,
+            text: "Count",
+          },
+          beginAtZero: true,
+        },
+      },
+    }),
+    []
+  );
+
+
+
+
+  <div className=" ">
+          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+            <FaStar className="inline-block mr-2 text-orange-500" /> Ratings
+          </h2>
+          <p className="flex items-center">
+            <FaStar className="text-orange-500 mr-2" />{" "}
+            {jobDetails.ratingsSummary.totalRatings} rated.
+          </p>
+        </div>
+
+
+
+
+
+
+
+
+{
+  /* <InfoSection
+  fetchData={() =>
+    axios.get("/api/reviews?targetId=123&targetType=Job").then((res) => res.data.reviews)
+  }
+  onAddNewItem={(newReview) => console.log("New review added:", newReview)}
+  renderItem={(review) => (
+    <>
+      <img
+        src={review.user?.profileImage || "https://via.placeholder.com/50"}
+        alt={review.user?.username || "Anonymous"}
+        className="profile-image"
+      />
+      <p>{review.user?.username || "Anonymous"}: {review.reviewText}</p>
+    </>
+  )}
+  headerTitle="View Reviews"
+  addButtonLabel="Write a Review"
+  emptyMessage="No reviews yet!"
+/> */
+}
+
+{
+  /* <InfoSection
+  fetchData={() =>
+    axios.get("/api/comments?postId=456").then((res) => res.data.comments)
+  }
+  onAddNewItem={(newComment) => console.log("New comment added:", newComment)}
+  renderItem={(comment) => (
+    <p>
+      <strong>{comment.user?.username || "Anonymous"}:</strong> {comment.text}
+    </p>
+  )}
+  headerTitle="View Comments"
+  addButtonLabel="Add Comment"
+  emptyMessage="No comments yet!"
+/> */
+}        
+
+
+
+import React, { useState, useEffect } from "react";
+
+const DisplaySection = ({
+  title, // Title for the toggle button (e.g., "View Reviews", "View Comments")
+  data, // The array of items to display (reviews or comments)
+  renderItem, // Function to render each item
+  fetchData, // Function to fetch data (optional)
+  onAddItem, // Function to handle adding a new item
+  addItemButtonLabel, // Label for the "Add Item" button
+  FormComponent, // Component to handle adding new items
+  emptyMessage, // Message to show when there's no data
+}) => {
+  const [showSection, setShowSection] = useState(false);
+  const [showFormDialog, setShowFormDialog] = useState(false);
+  const [items, setItems] = useState(data || []);
+  const [loading, setLoading] = useState(false);
+
+  // Fetch data when the section is toggled
+  useEffect(() => {
+    if (showSection && fetchData) {
+      setLoading(true);
+      fetchData()
+        .then((fetchedData) => setItems(fetchedData || []))
+        .catch((err) => console.error("Error fetching data:", err))
+        .finally(() => setLoading(false));
+    }
+  }, [showSection, fetchData]);
+
+  // Handle adding a new item
+  const handleAddItem = (newItem) => {
+    setItems((prev) => [...prev, newItem]);
+    setShowFormDialog(false);
+    if (onAddItem) onAddItem(newItem);
+  };
+
+  return (
+    <div className="display-section">
+      <div className="section-header">
+        <button onClick={() => setShowSection((prev) => !prev)} className="toggle-section-button">
+          {showSection ? `Hide ${title}` : `View ${title}`}
+        </button>
+        <button onClick={() => setShowFormDialog(true)} className="add-item-button">
+          {addItemButtonLabel}
+        </button>
+      </div>
+
+      {showFormDialog && (
+        <>
+          <div className="overlay" onClick={() => setShowFormDialog(false)}></div>
+          <FormComponent
+            onSubmit={handleAddItem}
+            onClose={() => setShowFormDialog(false)}
+          />
+        </>
+      )}
+
+      {showSection && (
+        <div className="items-list">
+          {loading ? (
+            <p>Loading...</p>
+          ) : items.length > 0 ? (
+            items.map((item, index) => (
+              <div key={item._id || index} className="item">
+                {renderItem(item)}
+              </div>
+            ))
+          ) : (
+            <p>{emptyMessage}</p>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default DisplaySection;
+
+
+<DisplaySection
+  title="Reviews"
+  data={reviews}
+  fetchData={() =>
+    axios.get(`/api/reviews?targetId=${id}&targetType=Job`).then((res) => res.data.reviews)
+  }
+  renderItem={(review) => (
+    <div>
+      <p>
+        <strong>Rating:</strong> {review.review.rating} Star{review.review.rating > 1 ? "s" : ""} ⭐
+      </p>
+      <p>
+        <strong>Review:</strong> {review.review.reviewText}
+      </p>
+    </div>
+  )}
+  onAddItem={(newReview) => console.log("New review added:", newReview)}
+  addItemButtonLabel="Write a Review"
+  FormComponent={({ onSubmit, onClose }) => (
+    <ReviewForm targetId={id} targetType="Job" onReviewSubmit={onSubmit} onClose={onClose} />
+  )}
+  emptyMessage="No reviews yet!"
+/>
+
+
+<DisplaySection
+  title="Comments"
+  data={comments}
+  fetchData={() =>
+    axios.get(`/api/comments?targetId=${id}&targetType=Job`).then((res) => res.data.comments)
+  }
+  renderItem={(comment) => (
+    <div>
+      <p>
+        <strong>Comment:</strong> {comment.comment.commentText}
+      </p>
+    </div>
+  )}
+  onAddItem={(newComment) => console.log("New comment added:", newComment)}
+  addItemButtonLabel="Write a Comment"
+  FormComponent={({ onSubmit, onClose }) => (
+    <CommentForm targetId={id} targetType="Job" onSubmit={onSubmit} onClose={onClose} />
+  )}
+  emptyMessage="No comments yet!"
+/>
+
+
+
+
+
+  The app you've been building is a Job Board Platform designed to connect job seekers and employers in a streamlined and efficient manner. Here's an overview of its main focus and purpose:
+
+App Overview
+The job board app is a full-stack application with a robust backend built using Node.js, Express, and MongoDB, and a dynamic frontend using React. It includes authentication, user roles, and a variety of features to make job discovery, application, and feedback processes seamless.
+
+Main Focus
+Connecting Job Seekers and Employers
+
+Allow job seekers to browse, search, and apply for jobs.
+Provide employers with tools to post jobs, manage applications, and interact with potential candidates.
+User Engagement
+
+Enable users to interact with job postings through features like ratings, reviews, likes, and comments.
+Allow job seekers to rate and review jobs, providing valuable feedback to employers.
+Streamlined User Experience
+
+Offer role-based access for job seekers, employers, and administrators.
+Ensure secure and efficient operations through advanced features like authentication, input validation, and data integrity.
+Key Features
+Job Management
+
+Employers can post jobs with detailed descriptions, skills required, salary ranges, and more.
+Job seekers can view, filter, and apply for jobs directly.
+Ratings and Reviews
+
+Job seekers can rate jobs on a scale of 1 to 5.
+Users can leave reviews and comments to provide feedback about jobs and companies.
+Interactive Features
+
+Job seekers can "like" jobs.
+Employers can track applicants and manage their postings.
+Authentication
+
+Role-based access control for job seekers, employers, and admins.
+Secure authentication using JWT tokens, with features like email verification and optional two-factor authentication.
+Data Insights
+
+Ratings summary (average rating and total ratings) for jobs and companies.
+Metrics to help employers improve job postings and better understand their audience.
+Advanced Features for Security and Usability
+
+CSRF protection, session management, and IP whitelisting.
+Advanced filtering options for job seekers to search by location, skills, or job type.
+Purpose
+The app's primary purpose is to create a centralized platform for managing the hiring process, addressing the following goals:
+
+Empower Job Seekers: By providing access to job opportunities with transparency in ratings, reviews, and job details.
+Support Employers: By offering tools to find qualified candidates efficiently.
+Enhance Community Trust: Through feedback mechanisms like ratings and reviews, fostering accountability among users.

@@ -5,7 +5,7 @@ import Footer from "../../Footer/Footer";
 import Header from "../../Header/Header";
 import DynamicDrawer from "../../components/TopNavAndDrawer";
 
-const Register = () => {
+const RegisterCompany = () => {
   const navigate = useNavigate(); // Initialize the navigate hook
 
   const [formData, setFormData] = useState({
@@ -19,7 +19,7 @@ const Register = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(`Changing ${name}: ${value}`); // Debug log
+    console.log(`Changing ${name}: ${value}`);
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -192,4 +192,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default RegisterCompany;

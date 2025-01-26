@@ -41,15 +41,61 @@ const DetailedPage = () => {
   ];
   return (
     <div>
-      <DynamicDrawer
+      {/* <DynamicDrawer
         menuItems={menuItems}
         title="Home| Page"
         onSelectedTab={handleTabSelection}
-      >
-        <JobDetails />
-      </DynamicDrawer>
+      > */}
+      <JobDetails />
+      {/* </DynamicDrawer> */}
     </div>
   );
 };
 
 export default DetailedPage;
+
+// import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+// import DynamicDrawer from "./DynamicDrawer";
+
+// const Dashboard = () => (
+//   <div>
+//     <JobDetails />
+//   </div>
+// );
+// const Messages = () => <div>Messages Content</div>;
+// const Inbox = () => <div>Inbox Content</div>;
+// const Sent = () => <div>Sent Content</div>;
+// const Settings = () => <div>Settings Content</div>;
+
+// const DetailedPage = () => {
+//   const menuItems = [
+//     { text: "Dashboard", icon: <InboxIcon />, path: "/" },
+//     {
+//       text: "Messages",
+//       icon: <MailIcon />,
+//       subItems: [
+//         { text: "Inbox", icon: <InboxIcon />, path: "/messages/inbox" },
+//         { text: "Sent", icon: <MailIcon />, path: "/messages/sent" },
+//       ],
+//     },
+//     { text: "Settings", icon: <InboxIcon />, path: "/settings" },
+//   ];
+
+//   const onSelectedTab = (menuItem) => {
+//     console.log("Selected Tab:", menuItem.text);
+//   };
+
+//   return (
+//     <Router>
+//       <DynamicDrawer menuItems={menuItems} onSelectedTab={onSelectedTab} />
+//       <Routes>
+//         <Route path="/" element={<Dashboard />} />
+//         <Route path="/messages/inbox" element={<Inbox />} />
+//         <Route path="/messages/sent" element={<Sent />} />
+//         <Route path="/settings" element={<Settings />} />
+//       </Routes>
+//     </Router>
+//   );
+// };
+
+// export default DetailedPage;

@@ -11,7 +11,7 @@ const jobData = {
   postedDate: "2025-01-11",
   company: {
     name: "Tech Innovations Inc.",
-    logo: "https://example.com/company-logo.png",
+    logo: "https://unsplash.com/photos/a-golden-letter-p-on-a-green-background-ecQIWxL6Ihc",
     description:
       "Tech Innovations Inc. is a leading software development company specializing in cutting-edge solutions for businesses.",
     website: "https://techinnovations.com",
@@ -38,7 +38,7 @@ const jobData = {
   ],
   deadline: "2025-02-01",
 };
-const JobDetailsPage = () => {
+const JobDetailsPages = () => {
   const {
     title,
     type,
@@ -105,4 +105,4 @@ const JobDetailsPage = () => {
   );
 };
 
-export default JobDetailsPage;
+export default JobDetailsPages;

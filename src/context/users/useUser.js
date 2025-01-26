@@ -10,7 +10,7 @@ export const useUser = () => {
 
 // UserContext Provider Component
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(null); // State to store user data
+  const [user, setUser] = useState(null); 
 
   // Check for stored user data on component mount
   useEffect(() => {

@@ -20,11 +20,12 @@ import PrivateRoute from "./routes/PrivateRoute";
 import GlobalError from "./context/global/GlobalError";
 import GlobalLoading from "./context/global/GlobalLoading";
 import { UserProvider } from "./context/users/useUser";
-import Layout from "./page/Layout";
 import Footer from "./components/Footer/Footer";
 import JobPage from "./jobs/loading/JobPage";
 // import JobDetails from "./jobs/JobDetailPage";
 import DetailedPage from "./jobs/Page";
+import LoginForm from "./components/authcomponent/companyAuth/LoginForm";
+import RegisterForm from "./components/authcomponent/companyAuth/RegisterCompany";
 // Import your components
 
 const App = () => {
@@ -54,7 +55,11 @@ const App = () => {
             <Route path="/register" element={<RegistrationForm />} />
             <Route path="/login" element={<LoginPage />} />
 
+            <Route path="/compregister" element={<RegisterForm />} />
+            <Route path="/companylogin" element={<LoginForm />} />
+
             <Route path="/jobs" element={<JobPage />} />
+            {/* <Route path="/jobs" element={<DetailedPage />} /> */}
             <Route path="/jobs/:id" element={<DetailedPage />} />
             <Route
               path="/dashboard"
@@ -68,6 +73,7 @@ const App = () => {
           </Routes>
           {/* </Layout> */}
         </Router>
+        {/* <DetailedPage /> */}
         <Footer />
       </UserProvider>
     </ThemeProvider>
@@ -75,14 +81,3 @@ const App = () => {
 };
 
 export default App;
-
-/* <PrivateRoute path="/company/:id" element={<CompanyPage />} />
-<PrivateRoute path="/job/:id" element={<JobDetailsPage />} />
-<PrivateRoute path="/profile" element={<UserProfilePage />} />
-<PrivateRoute path="/admin" element={<AdminDashboard />} /> */
-
-// {
-//   /* <PrivateRoute path="/admin" element={user?.role === 'admin' ? <AdminDashboard /> : <Navigate to="/" />} /> */
-// }
-
-// theme={/* Your theme config */}

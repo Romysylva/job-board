@@ -260,3 +260,72 @@ export default ManagePreferences;
 // };
 
 // export default ManagePreferences;
+
+// import React, { useState } from "react";
+
+// const ManagePreferences = () => {
+//   const [preferences, setPreferences] = useState({
+//     notifications: true,
+//     darkMode: false,
+//     emailUpdates: true,
+//   });
+
+//   const handleToggle = (preference) => {
+//     setPreferences((prev) => ({
+//       ...prev,
+//       [preference]: !prev[preference],
+//     }));
+//   };
+
+//   const handleSubmit = (e) => {
+//     e.preventDefault();
+//     console.log("Preferences saved:", preferences);
+//     alert("Preferences updated successfully!");
+//   };
+
+//   return (
+//     <div className="p-6 bg-white rounded-lg shadow-md dark:bg-gray-800 dark:text-white">
+//       <h2 className="text-2xl font-semibold mb-4">Manage Preferences</h2>
+//       <form onSubmit={handleSubmit} className="space-y-4">
+//         <div className="flex items-center justify-between">
+//           <span>Enable Notifications</span>
+//           <input
+//             type="checkbox"
+//             checked={preferences.notifications}
+//             onChange={() => handleToggle("notifications")}
+//             className="form-checkbox h-5 w-5 text-blue-600 rounded"
+//           />
+//         </div>
+
+//         <div className="flex items-center justify-between">
+//           <span>Dark Mode</span>
+//           <input
+//             type="checkbox"
+//             checked={preferences.darkMode}
+//             onChange={() => handleToggle("darkMode")}
+//             className="form-checkbox h-5 w-5 text-blue-600 rounded"
+//           />
+//         </div>
+
+//         <div className="flex items-center justify-between">
+//           <span>Receive Email Updates</span>
+//           <input
+//             type="checkbox"
+//             checked={preferences.emailUpdates}
+//             onChange={() => handleToggle("emailUpdates")}
+//             className="form-checkbox h-5 w-5 text-blue-600 rounded"
+//           />
+//         </div>
+
+//         <button
+//           type="submit"
+//           className="cta-button bg-blue-600 text-white py-2 px-6 rounded-full mt-4 hover:bg-blue-700"
+//         >
+//           Save Preferences
+//         </button>
+//       </form>
+//     </div>
+//   );
+// };
+
+// export default ManagePreferences;

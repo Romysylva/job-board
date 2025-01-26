@@ -11,6 +11,39 @@
     @apply p-3 flex items-start justify-end text-2xl font-semibold;
   }
 } */
+.chart-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.job-list-container-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.job-card-grid {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px, 5px, rgba(0, 0, 0, 0.1);
+  background: #fff;
+}
+
+.ratings-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ratings-container p {
+  margin: 0;
+}
 
 @layer components {
   .card-design {
@@ -76,4 +109,273 @@
 .testimonial-role {
   font-size: 1rem;
   color: #777;
+}
+
+/* styles.css */
+.dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+.dialog-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dialog h3 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
+
+.dialog form {
+  width: 100%;
+}
+
+.dialog form > div {
+  margin-bottom: 15px;
+}
+
+.dialog form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.dialog form textarea,
+.dialog form select {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.dialog form button {
+  margin-top: 10px;
+  padding: 10px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.dialog form button:hover {
+  background-color: #0056b3;
+}
+
+.dialog button[type="button"] {
+  background-color: #f44336;
+}
+
+.dialog button[type="button"]:hover {
+  background-color: #c62828;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  animation: fadeIn 0.3s ease;
+}
+
+.add-review-btn {
+  padding: 10px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #28a745;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.add-review-btn:hover {
+  background-color: #218838;
+  transform: scale(1.1);
+}
+
+/* Animation Keyframes */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.reviews-section {
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.reviews-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.reviews-header h3 {
+  margin: 0;
+  font-size: 24px;
+  color: #333;
+}
+.add-review-button {
+  padding: 10px 15px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.add-review-button:hover {
+  background-color: #0056b3;
+}
+.review-item {
+  margin-bottom: 15px;
+  padding: 15px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.review-item h4 {
+  margin: 0 0 5px;
+  font-size: 18px;
+  color: #555;
+}
+.review-item p {
+  margin: 0;
+  font-size: 14px;
+  color: #777;
+}
+
+/* Center the spinner */
+.spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%; /* Full height of parent container */
+  min-height: 100px; /* Minimum height for spinner visibility */
+}
+
+/* Spinner loader */
+.loader {
+  border: 4px solid rgba(0, 0, 0, 0.1); /* Light outer border */
+  border-top: 4px solid #3498db; /* Blue spinning top border */
+  border-radius: 50%; /* Circle shape */
+  width: 40px; /* Diameter */
+  height: 40px; /* Diameter */
+  animation: spin 1s linear infinite; /* Rotate animation */
+}
+
+/* Spinner animation */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.like-dislike-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.like-button {
+  padding: 8px 16px;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.like-button.liked {
+  background-color: #28a745;
+}
+
+.like-button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+.like-button:hover {
+  opacity: 0.9;
+}
+
+.register-form,
+.login-form {
+  max-width: 400px;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+}
+
+.register-form h2,
+.login-form h2 {
+  text-align: center;
+}
+
+.register-form input,
+.login-form input,
+.register-form textarea {
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.register-form button,
+.login-form button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.register-form button:hover,
+.login-form button:hover {
+  background-color: #0056b3;
+}
+
+.error {
+  color: red;
+  text-align: center;
+}
+
+.success {
+  color: green;
+  text-align: center;
 }
