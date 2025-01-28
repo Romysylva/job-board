@@ -556,3 +556,61 @@ The app's primary purpose is to create a centralized platform for managing the h
 Empower Job Seekers: By providing access to job opportunities with transparency in ratings, reviews, and job details.
 Support Employers: By offering tools to find qualified candidates efficiently.
 Enhance Community Trust: Through feedback mechanisms like ratings and reviews, fostering accountability among users.
+
+
+
+
+// import React, { useEffect, useState } from "react";
+// import { useParams, useNavigate } from "react-router-dom";
+// import axios from "../utils/axiosConfig";
+
+// const JobDetails = () => {
+//   const { jobId } = useParams();
+//   const navigate = useNavigate();
+//   const [job, setJob] = useState(null);
+// const [applicants, setApplicants] = useState([]);
+
+//   useEffect(() => {
+//     const fetchJobDetails = async () => {
+//       try {
+//         const response = await axios.get(`/api/jobs/${jobId}`);
+//         setJob(response.data);
+// const applicantsResponse = await axios.get(
+//   `/api/jobs/${jobId}/applicants`
+// );
+// setApplicants(applicantsResponse.data.applicants);
+//       } catch (err) {
+//         console.error("Error fetching job details:", err.message);
+//       }
+//     };
+//     fetchJobDetails();
+//   }, [jobId]);
+
+//   return (
+//     <div className="job-detailed-page">
+//       {job && (
+//         <>
+//           <h1>{job.title}</h1>
+//           <p>{job.description}</p>
+// <h3>Total Applicants: {applicants.length}</h3>
+// <div className="applicants-list">
+//   {applicants.map((applicant) => (
+//     <div key={applicant.user._id} className="applicant-card">
+//       <img
+//         src={applicant.user.profileImage}
+//         alt={`${applicant.user.name}'s profile`}
+//       />
+//       <p>{applicant.user.name}</p>
+//     </div>
+//   ))}
+// </div>
+// <button onClick={() => navigate(`/company/${job.company._id}`)}>
+//   Apply for this Job
+// </button>
+// </>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default JobDetails;

@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import axios from "../../../utils/axiosConfig"; // Replace with your axios config
 import { useNavigate } from "react-router-dom";
+import { useGlobalContext } from "../../../context/global/GlobalProvider";
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+  const { showLoading, hideLoading, showError } = useGlobalContext();
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -18,18 +20,22 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setError("");
+      showLoading();
+      showError("");
 
-      const response = await axios.post(
-        "http://localhost:5000/api/auth/company/login",
-        formData
-      );
+      const response = await axios.post("/auth/company/login", formData, {
+        header: { "Content-Type": "application/json" },
+      });
 
       // Store the token in local storage or context
       localStorage.setItem("authToken", response.data.token);
-      navigate("/dashboard"); // Redirect to the dashboard or another page
+      localStorage.setItem("company", JSON.stringify(response.data.company));
+
+      navigate("/dashboard");
     } catch (err) {
-      setError(err.response?.data?.message || "Login failed");
+      showError(err.response?.data?.message || "Login failed");
+    } finally {
+      hideLoading();
     }
   };
 

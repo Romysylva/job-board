@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../../utils/axiosConfig";
 import { useNavigate } from "react-router-dom";
 
 const LoginForm = ({ onLogin }) => {
@@ -17,7 +18,8 @@ const LoginForm = ({ onLogin }) => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        "/auth/login",
+        // "http://localhost:5000/api/auth/login",
         formData,
         {
           headers: { "Content-Type": "application/json" },

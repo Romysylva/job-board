@@ -46,7 +46,7 @@ const App = () => {
 
             {/* Protected Routes (Accessible when logged in) */}
             <Route path="/" element={<HomePage />} />
-            <Route path="/company/:id" element={<CompanyPage />} />
+            <Route path="/companies/:id" element={<CompanyPage />} />
             {/* <Route path="/job/:id" element={<JobDetailsPage />} /> */}
             <Route path="/profile" element={<UserProfilePage />} />
 

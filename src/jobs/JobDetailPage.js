@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "../utils/axiosConfig";
 import { useGlobalContext } from "../context/global/GlobalProvider";
 import RatingStar from "./components/RatingStar";
@@ -28,8 +28,9 @@ import Reviews from "./components/Reviews";
 import Comments from "./components/Comments";
 import { AuthProvider } from "../context/AuthProvider";
 
-const JobDetails = ({ targetId, targetType }) => {
+const JobDetails = ({ targetId, targetType, companyId }) => {
   const { id } = useParams();
+  const { jobId } = useParams();
   const [jobDetails, setJobDetails] = useState(null);
   const [expandedSections, setExpandedSections] = useState({});
   const { showLoading, hideLoading, showError, showSuccess, clearError } =
@@ -41,6 +42,8 @@ const JobDetails = ({ targetId, targetType }) => {
   const [showCommentDialog, setShowCommentDialog] = useState(false);
   const [viewReviews, setViewReviews] = useState(false);
   const [openComment, setOpenComment] = useState(false);
+  const [applicants, setApplicants] = useState([]);
+  const navigate = useNavigate();
 
   const handleOpenDialog = () => setShowCommentDialog(true);
   const handleCloseDialog = () => setShowCommentDialog(false);
@@ -167,6 +170,11 @@ const JobDetails = ({ targetId, targetType }) => {
         }
         const response = await axios.get(`/jobs/${id}`);
         setJobDetails(response.data);
+        const applicantsResponse = await axios.get(`/jobs/${id}/applicants`);
+        // console.log("Job Details:", jobDetails);
+        // console.log("Applicants:", applicants);
+
+        setApplicants(applicantsResponse.data.applicants);
       } catch (err) {
         showError("Failed to fetch job details. Please try again.");
       } finally {
@@ -176,7 +184,7 @@ const JobDetails = ({ targetId, targetType }) => {
     fetchJobDetails();
   }, [id]);
 
-  if (!jobDetails) return <div>loading...</div>;
+  // if (!jobDetails) return <div>loading...</div>;
 
   const handleRatingSubmit = async (rating) => {
     try {
@@ -200,7 +208,7 @@ const JobDetails = ({ targetId, targetType }) => {
   };
 
   if (!jobDetails) {
-    return <div>Loading...</div>;
+    return <p>Loading job details...</p>;
   }
 
   return (
@@ -471,6 +479,41 @@ const JobDetails = ({ targetId, targetType }) => {
               )}
               <LikeDisLike jobId={id} />
               <RatingStar onSubmitRating={handleRatingSubmit} />
+
+              <h3>Total Applicants: {jobDetails.applicants.length || 0}</h3>
+              <div className="applicants-list">
+                {jobDetails.applicants.map((applicant) => (
+                  <div key={applicant.user._id} className="applicant-card">
+                    <img
+                      src={applicant.user.profileImage}
+                      alt={`${applicant.user.name}'s profile`}
+                    />
+                    <p>{applicant.user.name}</p>
+                  </div>
+                ))}
+              </div>
+              <div>
+                {/* <button
+                  onClick={() =>
+                    jobDetails.company
+                      ? navigate(`/companies/${jobDetails.company._id}`)
+                      : showError("Company details not available.")
+                  }
+                >
+                  Apply for this Job
+                </button> */}
+                <button
+                  onClick={() => {
+                    if (jobDetails.company && jobDetails.company._id) {
+                      navigate(`/companies/${jobDetails.company._id}`);
+                    } else {
+                      showError("Company details not available.");
+                    }
+                  }}
+                >
+                  Apply for this Job
+                </button>
+              </div>
             </div>
           </div>
         </div>
