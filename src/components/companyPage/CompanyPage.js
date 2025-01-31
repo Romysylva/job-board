@@ -1,58 +1,26 @@
-// import React from "react";
-
-import CompanyBanner from "./CompanyBanner";
-import AboutCompany from "./AboutCompany";
-// import OpenPositions from "./OpenPositions";
-// import Header from "../Header/Header";
-// import Footer from "../Footer/Footer";
-
-// const CompanyPage = () => {
-//   return (
-//     <div className="min-h-screen flex flex-col">
-//       <Header />
-//       <main className="flex-grow">
-//         <CompanyBanner />
-//         <div className="container mx-auto px-4 py-8">
-// <AboutCompany />
-//           <OpenPositions />
-//         </div>
-//       </main>
-//       <Footer />
-//     </div>
-//   );
-// };
-
-// export default CompanyPage;
-
-// Populate the CompanyBanner and OpenPositions with dynamic data fetched from the backend.
-// Add navigation links to make the company page interactive.
-// Implement a loading spinner or skeleton UI for API data fetching.
-
-// users
-
-// Connect the ProfileDetails, ActivityFeed, and SettingsSection components to the backend API.
-// Allow user interaction to update profile details and preferences.
-// Fetch dynamic data for saved jobs, applications, and reviews
-
-// dashbord
-
-// Dynamic Data: Fetch and display real-time data for users, jobs, companies, and reviews.
-// Routing: Ensure admin navigation links work correctly using React Router.
-// CRUD Operations: Implement forms and modals for creating, updating, and deleting entities.
-
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "../../utils/axiosConfig";
+import Sidebar from "./SideNav";
+import Header from "../Header/Header";
+import ApplicationForm from "../applicaions/ApplicationForm";
+// import axios from "axios";
 
-const CompanyPage = () => {
+
+
+
+const CompanyPage = ({jobId}) => {
   const { id } = useParams();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [company, setCompany] = useState(null);
   const [jobs, setJobs] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null);
   const [error, setError] = useState("");
+  const [showApplicationForm, setShowApplicationForm] = useState(false);
+  const [user, setUser] = useState(null || []);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  console.log("show companyId is defined", id);
+  // console.log("show companyId is defined", id);
 
   useEffect(() => {
     const fetchCompanyDetails = async () => {
@@ -65,17 +33,25 @@ const CompanyPage = () => {
           `http://localhost:5000/api/companies/${id}`
         );
         setCompany(response.data);
-        setJobs(response.data.jobs);
-        console.log(response.data);
+        setJobs(response.data.jobs || []);
+        // console.log(response.data);
       } catch (err) {
-        console.error("Error fetching company details:", err.message);
+        console.error(
+          "Error fetching company details:",
+          err.respponse?.data.message || err.message
+        );
       }
     };
     fetchCompanyDetails(id);
   }, [id]);
 
-  const handleApply = (job) => {
+  const handJobSelect = (job) => {
+    setShowApplicationForm(false);
     setSelectedJob(job);
+  };
+  // console.log(jobs)
+  const handleApply = () => {
+    setShowApplicationForm(true);
   };
 
   const handleApplicationSubmit = async (e) => {
@@ -95,6 +71,21 @@ const CompanyPage = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get(`http://localhost:5000/api/auth/me`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setUser(response.data.data || []);
+      } catch (err) {
+        console.error("Error fetching user", err);
+      }
+    };
+    fetchUser();
+  }, []);
+
   if (error) {
     return <p>{error}</p>;
   }
@@ -104,64 +95,134 @@ const CompanyPage = () => {
   }
 
   return (
-    <div className="company-page">
-      {company && (
-        <>
-          <div
-            className="parallax-banner"
-            style={{ backgroundImage: `url(${company.bannerImage})` }}
-          >
-            <h1>{company.name}</h1>
-            {company.logo && (
-              <img
-                src={`http://localhost:5000/${company.logo}`}
-                alt="companyLogo"
-              />
-            )}
-          </div>
-          <div className="company-info">
-            <h2>About {company.name}</h2>
-            <p>{company.description}</p>
-          </div>
-          <div className="job-list">
-            <h2>Available Jobs</h2>
-            {jobs.map((job) => (
-              <div
-                key={job._id}
-                className="job-card"
-                onClick={() => navigate(`/jobs/${job._id}`)}
-              >
-                <h3>Job Title: {job.title}</h3>
-                <p>Job description: {job.description}</p>
-                <p>Job location: {job.location}</p>
-                <p>Salary: {jobs.salary}</p>
-                <button onClick={() => handleApply(job)}>Apply</button>
+    <>
+      <Header />
+      <div className="company-page dark:bg-gray-900 dark:text-gray-300">
+        {user && <Sidebar userRole={user.roles} isOpen={isSidebarOpen} toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}/>}
+
+        <main className="content main-content dark:bg-gray-900 dark:text-gray-300">
+          {company && (
+            <>
+              {company.logo && (
+                <div
+                  className="parallax-banner"
+                  style={{
+                    backgroundImage: `url("http://localhost:5000/${company.logo.replace(
+                      /\\/g,
+                      "/"
+                    )}")`,
+                  }}
+                >
+                  {/* <div>
+                    <h1 className="text-center text-3xl">{company.name}</h1>
+                    <div className="mt-8">
+                      <h2>About {company.name}</h2>
+                      <p>{company.about}</p>
+                      <p>Comapny Location: {company.location}</p>
+                    </div>
+                  </div> */}
+                  <header className="company-header">
+                    {company ? (
+                      <>
+                        <img
+                          src={
+                            `http://localhost:5000/${company.logo}` ||
+                            "/images/default-company-logo.png"
+                          }
+                          alt="Company Logo"
+                        />
+                        <h1 className="text-center text-4xl">{company.name}</h1>
+                        <div className="mt-8">
+                          <h2>About {company.name}</h2>
+                          <p>{company.about}</p>
+                          <p>Comapny Location: {company.location}</p>
+                        </div>
+                      </>
+                    ) : (
+                      <p>Loading company details...</p>
+                    )}
+                  </header>
+                </div>
+              )}
+              <div className="company-info">
+                <p>{company.description}</p>
               </div>
-            ))}
-          </div>
-        </>
-      )}
-      {selectedJob && (
-        <div className="application-form">
-          <h2>Apply for {selectedJob.title}</h2>
-          <form onSubmit={handleApplicationSubmit}>
-            <input type="text" name="name" placeholder="Your Name" required />
-            <input
-              type="email"
-              name="email"
-              placeholder="Your Email"
-              required
-            />
-            <textarea
-              name="coverLetter"
-              placeholder="Your Cover Letter"
-              required
-            />
-            <button type="submit">Submit Application</button>
-          </form>
-        </div>
-      )}
-    </div>
+              <section className="current-job">
+                {selectedJob ? (
+                  <>
+                    <h2 className="p-2 text-xl">Current Job</h2>
+                    <h3>{selectedJob.title}</h3>
+                    <p>Location: {selectedJob.location}</p>
+                    <p>Salary: {selectedJob.salary}</p>
+                    <button onClick={handleApply}  className="add-review-btn">Apply Now</button>
+                    {showApplicationForm && (
+                    
+                    <ApplicationForm isOpen={showApplicationForm} onClose={() =>  setShowApplicationForm(false)} jobId={selectedJob._id
+                    }/>
+                    )}
+                    
+                  </>
+                ) : (
+                  <p className="p-2 text-xl text-center">Select a job to view details.</p>
+                )}
+              </section>
+             
+              <section className="jobs-list dark:bg-graay-900 dark:text-gray-300">
+                <h2 className="text-center text-2xl">Available Jobs</h2>
+                {jobs.map((job) => (
+                  
+                  <div
+                    key={job._id}
+                    className="job-card dark:bg-gray-900 dark:text-gray-300"
+                    onClick={() => handJobSelect(job)}
+                  >
+                    <h3>Job Title: {job.title}</h3>
+                    <p>Job description: {job.description}</p>
+                    <p>Job location: {job.location}</p>
+                    <p>Salary: {job.salary}</p>
+                    
+
+                    <button
+                      onClick={() => handleApply(job)}
+                      className="add-review-btn"
+                    >
+                      Apply
+                    </button>
+                  </div>
+                ))}
+              </section>
+            </>
+          )}
+          {/* {selectedJob && (
+            <div className="application-form">
+              <h2>Apply for {selectedJob.title}</h2>
+              <form onSubmit={handleApplicationSubmit}>
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Your Name"
+                  required
+                />
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Your Email"
+                  required
+                />
+                <textarea
+                  name="coverLetter"
+                  placeholder="Your Cover Letter"
+                  required
+                />
+                <button type="submit" className="add-review-btn">
+                  Submit Application
+                </button>
+              </form>
+            </div>
+          )} */}
+        </main>
+      </div>
+    </>
   );
 };
 

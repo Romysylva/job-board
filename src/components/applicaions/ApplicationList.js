@@ -86,6 +86,7 @@ const ApplicationsList = () => {
         <table className="table-auto w-full border-collapse border border-gray-300">
           <thead>
             <tr className="bg-gray-100">
+              <th className="border border-gray-300 px-4 py-2">Company</th>
               <th className="border border-gray-300 px-4 py-2">Job Title</th>
               <th className="border border-gray-300 px-4 py-2">Applicant</th>
               <th className="border border-gray-300 px-4 py-2">Resume</th>
@@ -97,6 +98,9 @@ const ApplicationsList = () => {
           <tbody>
             {applications.map((application) => (
               <tr key={application._id}>
+                <td className="border border-gray-300 px-4 py-2">
+                  {application.job.company.name}
+                </td>
                 <td className="border border-gray-300 px-4 py-2">
                   {application.job.title}
                 </td>
@@ -129,6 +133,8 @@ const ApplicationsList = () => {
                     <option value="pending">Pending</option>
                     <option value="approved">Approved</option>
                     <option value="rejected">Rejected</option>
+                    <option value="rejected">Reviewed</option>
+                    <option value="rejected">Interview</option>
                   </select>
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
