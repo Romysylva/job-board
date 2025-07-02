@@ -6,6 +6,10 @@ const useFetchUserProfile = (userId) => {
   const [userProfile, setUserProfile] = useState(null);
   const { showLoading, hideLoading, showError } = useGlobalContext();
 
+  console.log("Fetching user profile for:", userId);
+  console.log("Fetched Data:", userProfile);
+  console.log("Error:", showError);
+
   const fetchUserProfile = async () => {
     showLoading(); // Start global loading state
     try {

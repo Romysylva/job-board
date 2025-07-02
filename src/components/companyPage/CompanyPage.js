@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "../../utils/axiosConfig";
 import Sidebar from "./SideNav";
 import Header from "../Header/Header";
 import ApplicationForm from "../applicaions/ApplicationForm";
-// import axios from "axios";
+import AnalyticsDashBoard from "./AnalyticsDashBoard";
+import JobForm from "../../jobs/JobForm"; // Import JobForm
 
-
-
-
-const CompanyPage = ({jobId}) => {
+const CompanyPage = () => {
   const { id } = useParams();
-  // const navigate = useNavigate();
   const [company, setCompany] = useState(null);
   const [jobs, setJobs] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null);
@@ -19,8 +16,7 @@ const CompanyPage = ({jobId}) => {
   const [showApplicationForm, setShowApplicationForm] = useState(false);
   const [user, setUser] = useState(null || []);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-  // console.log("show companyId is defined", id);
+  const [showJobForm, setShowJobForm] = useState(false);
 
   useEffect(() => {
     const fetchCompanyDetails = async () => {
@@ -34,42 +30,15 @@ const CompanyPage = ({jobId}) => {
         );
         setCompany(response.data);
         setJobs(response.data.jobs || []);
-        // console.log(response.data);
       } catch (err) {
         console.error(
           "Error fetching company details:",
-          err.respponse?.data.message || err.message
+          err.response?.data.message || err.message
         );
       }
     };
     fetchCompanyDetails(id);
   }, [id]);
-
-  const handJobSelect = (job) => {
-    setShowApplicationForm(false);
-    setSelectedJob(job);
-  };
-  // console.log(jobs)
-  const handleApply = () => {
-    setShowApplicationForm(true);
-  };
-
-  const handleApplicationSubmit = async (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-
-    try {
-      await axios.post(
-        `/jobs/${selectedJob._id}/apply`,
-        Object.fromEntries(formData)
-      );
-      alert("Application submitted successfully!");
-      window.location.reload();
-    } catch (err) {
-      console.error("Error submitting application:", err.message);
-      alert("Failed to submit application.");
-    }
-  };
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -78,7 +47,7 @@ const CompanyPage = ({jobId}) => {
         const response = await axios.get(`http://localhost:5000/api/auth/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setUser(response.data.data || []);
+        setUser(response.data.data || {});
       } catch (err) {
         console.error("Error fetching user", err);
       }
@@ -86,19 +55,36 @@ const CompanyPage = ({jobId}) => {
     fetchUser();
   }, []);
 
-  if (error) {
-    return <p>{error}</p>;
-  }
+  const handJobSelect = (job) => {
+    setShowApplicationForm(false);
+    setSelectedJob(job);
+  };
 
-  if (!company) {
-    return <p>Loading... ✴</p>;
-  }
+  const handleApply = () => {
+    setShowApplicationForm(true);
+  };
+
+  const toggleJobForm = () => {
+    setShowJobForm((prev) => !prev);
+  };
+
+  // const userRoles = Array.isArray(user.roles) ? user.roles : [user.roles];
+
+  if (error) return <p>{error}</p>;
+  if (!company) return <p>Loading... ✴</p>;
 
   return (
     <>
       <Header />
       <div className="company-page dark:bg-gray-900 dark:text-gray-300">
-        {user && <Sidebar userRole={user.roles} isOpen={isSidebarOpen} toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}/>}
+        {user && Array.isArray(user.roles) && user.roles.length > 0 && (
+          <Sidebar
+            userRole={user.roles.toString()}
+            isOpen={isSidebarOpen}
+            toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+            onPostJobClick={toggleJobForm}
+          />
+        )}
 
         <main className="content main-content dark:bg-gray-900 dark:text-gray-300">
           {company && (
@@ -113,14 +99,6 @@ const CompanyPage = ({jobId}) => {
                     )}")`,
                   }}
                 >
-                  {/* <div>
-                    <h1 className="text-center text-3xl">{company.name}</h1>
-                    <div className="mt-8">
-                      <h2>About {company.name}</h2>
-                      <p>{company.about}</p>
-                      <p>Comapny Location: {company.location}</p>
-                    </div>
-                  </div> */}
                   <header className="company-header">
                     {company ? (
                       <>
@@ -135,7 +113,7 @@ const CompanyPage = ({jobId}) => {
                         <div className="mt-8">
                           <h2>About {company.name}</h2>
                           <p>{company.about}</p>
-                          <p>Comapny Location: {company.location}</p>
+                          <p>Company Location: {company.location}</p>
                         </div>
                       </>
                     ) : (
@@ -147,6 +125,13 @@ const CompanyPage = ({jobId}) => {
               <div className="company-info">
                 <p>{company.description}</p>
               </div>
+
+              {/* Show Analytics Dashboard only for Admin/Manager */}
+              {(user?.roles?.includes("admin") ||
+                user?.roles?.includes("manager")) && (
+                <AnalyticsDashBoard companyId={id} />
+              )}
+
               <section className="current-job">
                 {selectedJob ? (
                   <>
@@ -154,23 +139,27 @@ const CompanyPage = ({jobId}) => {
                     <h3>{selectedJob.title}</h3>
                     <p>Location: {selectedJob.location}</p>
                     <p>Salary: {selectedJob.salary}</p>
-                    <button onClick={handleApply}  className="add-review-btn">Apply Now</button>
+                    <button onClick={handleApply} className="add-review-btn">
+                      Apply Now
+                    </button>
                     {showApplicationForm && (
-                    
-                    <ApplicationForm isOpen={showApplicationForm} onClose={() =>  setShowApplicationForm(false)} jobId={selectedJob._id
-                    }/>
+                      <ApplicationForm
+                        isOpen={showApplicationForm}
+                        onClose={() => setShowApplicationForm(false)}
+                        jobId={selectedJob._id}
+                      />
                     )}
-                    
                   </>
                 ) : (
-                  <p className="p-2 text-xl text-center">Select a job to view details.</p>
+                  <p className="p-2 text-xl text-center">
+                    Select a job to view details.
+                  </p>
                 )}
               </section>
-             
-              <section className="jobs-list dark:bg-graay-900 dark:text-gray-300">
+
+              <section className="jobs-list dark:bg-gray-900 dark:text-gray-300">
                 <h2 className="text-center text-2xl">Available Jobs</h2>
                 {jobs.map((job) => (
-                  
                   <div
                     key={job._id}
                     className="job-card dark:bg-gray-900 dark:text-gray-300"
@@ -180,7 +169,6 @@ const CompanyPage = ({jobId}) => {
                     <p>Job description: {job.description}</p>
                     <p>Job location: {job.location}</p>
                     <p>Salary: {job.salary}</p>
-                    
 
                     <button
                       onClick={() => handleApply(job)}
@@ -193,33 +181,15 @@ const CompanyPage = ({jobId}) => {
               </section>
             </>
           )}
-          {/* {selectedJob && (
-            <div className="application-form">
-              <h2>Apply for {selectedJob.title}</h2>
-              <form onSubmit={handleApplicationSubmit}>
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Your Name"
-                  required
-                />
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Your Email"
-                  required
-                />
-                <textarea
-                  name="coverLetter"
-                  placeholder="Your Cover Letter"
-                  required
-                />
-                <button type="submit" className="add-review-btn">
-                  Submit Application
-                </button>
-              </form>
-            </div>
-          )} */}
+
+          {/* Job Form Modal */}
+          {showJobForm && (
+            <JobForm
+              companyId={id}
+              onClose={toggleJobForm}
+              refreshJobs={() => setShowJobForm(false)}
+            />
+          )}
         </main>
       </div>
     </>

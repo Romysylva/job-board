@@ -1,30 +1,33 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthProvider";
 import axios from "../../utils/axiosConfig";
-// import Loading from "./Loading"; // Global loading component
-// import Error from "./Error"; // Global error component
 import { useGlobalContext } from "../../context/global/GlobalProvider";
-import { RequestPageRounded } from "@mui/icons-material";
 
 const LikeDisLike = ({ jobId }) => {
-  const { user } = useAuth(); // Access authenticated user
+  const { user } = useAuth();
   const [likes, setLikes] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
   const { showLoading, hideLoading, showError } = useGlobalContext();
 
   useEffect(() => {
-    if (!jobId) {
-      console.error("No jobId provided to LikeDisLike component.");
-      showError("Job ID is missing.");
-      return;
-    }
     const fetchLikes = async () => {
       try {
         showLoading();
+
+        // const token = localStorage.getItem("token");
+        // const user = JSON.parse(localStorage.getItem("user"));
+
+        // if (!token || !user?.id) {
+        //   // setMessage("You need to log in to rate this job.");
+        //   return;
+        // }
         const response = await axios.get(`/jobs/${jobId}`);
+
+        console.log("Fetched job data:", response.data.likes);
+
         setLikes(response.data.likes.length);
         if (user) {
-          setIsLiked(response.data.likes.includes(user.id)); // Dynamically use the logged-in user's ID
+          setIsLiked(response.data.likes.some((likeId) => likeId === user._id));
         }
       } catch (err) {
         showError("Error fetching likes:", err.message);
@@ -37,7 +40,9 @@ const LikeDisLike = ({ jobId }) => {
   }, [jobId, user]);
 
   const handleLikeDislike = async () => {
-    if (!user) {
+    console.log("Current User:", user);
+
+    if (!user || !user.id) {
       showError("You need to be logged in to like or dislike a job.");
       return;
     }
@@ -46,26 +51,14 @@ const LikeDisLike = ({ jobId }) => {
       showLoading();
       showError("");
 
-      const requestBody = {
-        userId: user._id,
-      };
+      const response = await axios.post(`/jobs/${jobId}/like`, {
+        userId: user.id,
+      });
 
-      if (isLiked) {
-        // Dislike API
-        const response = await axios.post(
-          `/jobs/${jobId}/dislike`,
-          requestBody
-        );
-        setLikes(response.data.likes);
-        setIsLiked(false);
-      } else {
-        // Like API
-        const response = await axios.post(`/jobs/${jobId}/like`, {
-          userId: user.id,
-        });
-        setLikes(response.data.likes);
-        setIsLiked(true);
-      }
+      console.log("Like response:", response.data); // Debugging
+
+      setLikes(response.data.likes.length);
+      setIsLiked(response.data.isLiked);
     } catch (err) {
       console.error(err);
       showError("Error updating like status.");
@@ -76,35 +69,22 @@ const LikeDisLike = ({ jobId }) => {
 
   return (
     <div className="like-dislike-container">
-      {/* {showLoading()} */}
-      {showError()}
       <button
         onClick={handleLikeDislike}
         className={`like-button ${isLiked ? "liked" : ""}`}
-        // disabled={loading}
       >
         {isLiked ? "👎" : "👍"}
       </button>
       <span>
-        {likes} {likes === 1 ? "Like" : "Likes"}
+        {likes}{" "}
+        {likes === 1 ? (
+          <span className="text-green-800 font-bold">Like</span>
+        ) : (
+          <span className="text-green-600 font-bold">Likes</span>
+        )}
       </span>
     </div>
   );
 };
 
 export default LikeDisLike;
-
-// import React from "react";
-// import LikeDislike from "./LikeDislike";
-
-// const JobDetails = ({ job }) => {
-//   return (
-//     <div>
-//       <h1>{job.title}</h1>
-//       <p>{job.description}</p>
-//       <LikeDislike jobId={job.id} />
-//     </div>
-//   );
-// };
-
-// export default JobDetails;

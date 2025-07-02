@@ -1,35 +1,3 @@
-// import { createContext, useContext, useState, useEffect } from "react";
-
-// const AuthContext = createContext();
-
-// export const useAuth = () => useContext(AuthContext);
-
-// export const AuthProvider = ({ children }) => {
-//   const [user, setUser] = useState(null);
-
-//   const login = (userData) => {
-//     setUser(userData);
-//     localStorage.setItem("user", JSON.stringify(userData));
-//   };
-
-//   const logout = () => {
-//     setUser(null);
-//     localStorage.removeItem("user");
-//   };
-//   useEffect(() => {
-//     const storedUser = localStorage.getItem("user");
-//     if (storedUser) {
-//       setUser(JSON.parse(storedUser));
-//     }
-//   }, []);
-
-//   return (
-//     <AuthContext.Provider value={{ user, login, logout }}>
-//       {children}
-//     </AuthContext.Provider>
-//   );
-// };
-
 import { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 
@@ -106,23 +74,3 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
-
-// import React from "react";
-// import { useAuth } from "./AuthContext";
-
-// const UserProfile = () => {
-//   const { user, logout } = useAuth();
-
-//   if (!user) {
-//     return <p>You are not logged in.</p>;
-//   }
-
-//   return (
-//     <div>
-//       <h1>Welcome, {user.username}</h1>
-//       <button onClick={logout}>Logout</button>
-//     </div>
-//   );
-// };
-
-// export default UserProfile;

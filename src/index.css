@@ -3,9 +3,8 @@
 @tailwind components;
 @tailwind utilities;
 
-
 .chart-container {
-  max-width: 600px;
+  max-width: 1020px;
   margin: 0 auto;
   padding: 20px;
   background: #fff;
@@ -53,8 +52,6 @@
   /* background: linear-gradient(to bottom right, #531d42, #8f8e8d); */
   padding: 100px 0;
 }
-
-
 
 .testimonial-carousel {
   width: 30%;
@@ -115,7 +112,6 @@
 .footer__width {
   margin-left: 250px;
   width: calc(100% - 250px);
-
 }
 .dialog form {
   width: 100%;
@@ -287,16 +283,15 @@
 }
 
 .like-button {
-  padding: 8px 16px;
-  border: none;
-  background-color: #007bff;
+  padding: 4px 8px;
   color: #fff;
   border-radius: 4px;
   cursor: pointer;
+  border: #007bff 1px solid;
 }
 
 .like-button.liked {
-  background-color: #28a745;
+  border: #28a745 1px solid;
 }
 
 .like-button:disabled {
@@ -408,10 +403,9 @@
 }
 
 .jobs-list div:hover {
-  background:rgb(70, 69, 69);
+  background: rgb(70, 69, 69);
   color: white;
 }
-
 
 /* Sidebar */
 .sidebar {
@@ -421,7 +415,7 @@
   width: 250px; /* Fixed width */
   height: 100vh; /* Full height */
   /* background-color: #1e293b; */
-  color:  #1e293b;
+  color: #1e293b;
   padding: 20px;
   transition: transform 0.3s ease-in-out;
 }
@@ -458,7 +452,7 @@
 .menu-link,
 .submenu-link {
   text-decoration: none;
-  color:  #1e293b;
+  color: #1e293b;
   display: flex;
   align-items: center;
   padding: 10px;
@@ -493,7 +487,7 @@
   left: 15px;
   background: none;
   border: none;
-  color:  #1e293b;
+  color: #1e293b;
   font-size: 24px;
   cursor: pointer;
   z-index: 1000;
@@ -531,8 +525,7 @@
   }
   .footer__width {
     margin-left: 0;
-    width:100%;
-  
+    width: 100%;
   }
 }
 
@@ -626,3 +619,192 @@
   right: 15px;
   cursor: pointer;
 }
+
+.analytics-dashboard {
+  max-width: 900px;
+  margin: auto;
+  text-align: center;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.analytics-dashboard h2 {
+  color: #333;
+}
+
+.analytics-dashboard p {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.chart-container {
+  margin: 30px auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.bar-chart {
+  width: 100%;
+  height: 400px;
+}
+
+.pie-chart {
+  width: 100%;
+  height: 300px;
+}
+
+.confirm-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.confirm-box {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  width: 320px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+.confirm-box h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.confirm-box p {
+  font-size: 0.9rem;
+  margin-top: 10px;
+}
+
+.confirm-buttons {
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.cancel-btn {
+  background: gray;
+  border: none;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.delete-btn {
+  background: red;
+  border: none;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+/* 
+Background Overlay .overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+} */
+
+/* Background Overlay */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Dropdown Dialog */
+.dropdown-container {
+  position: fixed;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -10%);
+  z-index: 1000;
+  width: 90%;
+  max-width: 500px;
+}
+
+.dropdown-dialog {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  animation: dropdown 0.3s ease-in-out;
+}
+
+/* Dropdown Animation */
+@keyframes dropdown {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -30%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -10%);
+  }
+}
+
+/* Input Styling */
+.dropdown-dialog input,
+.dropdown-dialog textarea,
+.dropdown-dialog select {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+/* Buttons */
+.button-group {
+  display: flex;
+  justify-content: space-between;
+}
+
+.button-group button {
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+.button-group .cancel-btn {
+  background: #ccc;
+  color: black;
+}
+
+.button-group button:hover {
+  background: #007bff;
+  color: white;
+}
+
+/* CompanyList.module.css */

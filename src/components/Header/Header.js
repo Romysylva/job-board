@@ -3,7 +3,7 @@ import { ThemeContext } from "../context/ThemeContext";
 const Header = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);
   return (
-    <header className="flex justify-between items-center px-6 py-4 bg-gray-100 dark:bg-gray-900 shadow ">
+    <header className="flex justify-between items-center px-6 py-4 bg-white shadow dark:bg-gray-900 shadow ">
       <div className="text-xl font-bold text-blue-600 dark:text-blue-400">
         <a href="/">JobBoard</a>
       </div>

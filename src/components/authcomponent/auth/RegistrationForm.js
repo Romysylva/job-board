@@ -13,6 +13,7 @@ const RegisterCompany = () => {
     email: "",
     password: "",
     roles: "user", // Default role can be set
+    location: "",
   });
   const [profileImage, setProfileImage] = useState(null);
   const [responseMessage, setResponseMessage] = useState("");
@@ -35,6 +36,7 @@ const RegisterCompany = () => {
     data.append("username", formData.username);
     data.append("email", formData.email);
     data.append("password", formData.password);
+    data.append("location", formData.location);
     data.append("roles", formData.roles);
     if (profileImage) {
       data.append("profileImage", profileImage);
@@ -129,10 +131,10 @@ const RegisterCompany = () => {
               <input
                 type="name"
                 name="username"
+                placeholder="username"
                 value={formData.username}
                 onChange={handleChange}
                 className="w-full mt-1 p-2 border rounded text-black dark:text-white bg-white dark:bg-gray-800"
-                placeholder="write here"
                 required
               />
             </div>
@@ -141,6 +143,7 @@ const RegisterCompany = () => {
               <input
                 type="email"
                 name="email"
+                placeholder="email address"
                 value={formData.email}
                 onChange={handleChange}
                 className="w-full mt-1 p-2 border rounded text-black dark:text-white bg-white dark:bg-gray-800"
@@ -152,7 +155,20 @@ const RegisterCompany = () => {
               <input
                 type="password"
                 name="password"
+                placeholder="password"
                 value={formData.password}
+                onChange={handleChange}
+                className="w-full mt-1 p-2 border rounded text-black dark:text-white bg-white dark:bg-gray-800"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium">Location</label>
+              <input
+                type="location"
+                name="location"
+                placeholder="location"
+                value={formData.location}
                 onChange={handleChange}
                 className="w-full mt-1 p-2 border rounded text-black dark:text-white bg-white dark:bg-gray-800"
                 required

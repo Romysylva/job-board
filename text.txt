@@ -614,3 +614,217 @@ Enhance Community Trust: Through feedback mechanisms like ratings and reviews, f
 // };
 
 // export default JobDetails;
+
+
+
+// import React, { useEffect, useState } from "react";
+// import { useParams } from "react-router-dom";
+// import axios from "../../utils/axiosConfig";
+// import Sidebar from "./SideNav";
+// import Header from "../Header/Header";
+// import ApplicationForm from "../applicaions/ApplicationForm";
+// import AnalyticsDashBoard from "./AnalyticsDashBoard";
+// import JobForm from "../../jobs/JobForm"; // Import JobForm component
+
+// const CompanyPage = () => {
+//   const { id } = useParams();
+//   const [company, setCompany] = useState(null);
+//   const [jobs, setJobs] = useState([]);
+//   const [selectedJob, setSelectedJob] = useState(null);
+//   const [error, setError] = useState("");
+//   const [showApplicationForm, setShowApplicationForm] = useState(false);
+//   const [user, setUser] = useState(null);
+//   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+//   const [showJobForm, setShowJobForm] = useState(false);
+
+//   useEffect(() => {
+//     const fetchCompanyDetails = async () => {
+//       if (!id) {
+//         setError("Company not found!");
+//         return;
+//       }
+//       try {
+//         const response = await axios.get(`/companies/${id}`);
+//         setCompany(response.data);
+//         setJobs(response.data.jobs || []);
+//       } catch (err) {
+//         console.error("Error fetching company details:", err.message);
+//       }
+//     };
+//     fetchCompanyDetails();
+//   }, [id]);
+
+//   useEffect(() => {
+//     const fetchUser = async () => {
+//       try {
+//         const token = localStorage.getItem("token");
+//         const response = await axios.get(`/auth/me`, {
+//           headers: { Authorization: `Bearer ${token}` },
+//         });
+//         setUser(response.data.data);
+//       } catch (err) {
+//         console.error("Error fetching user", err.message);
+//       }
+//     };
+//     fetchUser();
+//   }, []);
+
+//   const handleJobSelect = (job) => {
+//     setShowApplicationForm(false);
+//     setSelectedJob(job);
+//   };
+
+//   const handleApply = () => {
+//     setShowApplicationForm(true);
+//   };
+
+//   const toggleJobForm = () => {
+//     setShowJobForm(!showJobForm);
+//   };
+
+//   if (error) return <p>{error}</p>;
+//   if (!company) return <p>Loading... ✴</p>;
+
+//   return (
+//     <>
+//       <Header />
+//       <div className="company-page">
+//         {user && (
+//           <Sidebar
+//             userRole={user.roles}
+//             isOpen={isSidebarOpen}
+//             toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+//             onPostJobClick={toggleJobForm}
+//           />
+//         )}
+
+//         <main className="content">
+//           <div className="company-header">
+//             <h1>{company.name}</h1>
+//             <p>{company.about}</p>
+//             <p>Location: {company.location}</p>
+//           </div>
+
+//           {/* Show AnalyticsDashboard only for Admin or Manager */}
+//           {(user?.roles.includes("admin") ||
+//             user?.roles.includes("manager")) && (
+//             <AnalyticsDashBoard companyId={id} />
+//           )}
+
+//           <section className="current-job">
+//             {selectedJob ? (
+//               <>
+//                 <h2>Current Job</h2>
+//                 <h3>{selectedJob.title}</h3>
+//                 <p>Location: {selectedJob.location}</p>
+//                 <p>Salary: {selectedJob.salary}</p>
+//                 <button onClick={handleApply}>Apply Now</button>
+//                 {showApplicationForm && (
+//                   <ApplicationForm
+//                     isOpen={showApplicationForm}
+//                     onClose={() => setShowApplicationForm(false)}
+//                     jobId={selectedJob._id}
+//                   />
+//                 )}
+//               </>
+//             ) : (
+//               <p>Select a job to view details.</p>
+//             )}
+//           </section>
+
+//           <section className="jobs-list">
+//             <h2>Available Jobs</h2>
+//             {jobs.map((job) => (
+//               <div
+//                 key={job._id}
+//                 className="job-card"
+//                 onClick={() => handleJobSelect(job)}
+//               >
+//                 <h3>{job.title}</h3>
+//                 <p>{job.description}</p>
+//                 <p>Location: {job.location}</p>
+//                 <p>Salary: {job.salary}</p>
+//                 <button onClick={handleApply}>Apply</button>
+//               </div>
+//             ))}
+//           </section>
+
+//           {/* Job Form Modal */}
+//           {showJobForm && (
+//             <JobForm
+//               companyId={id}
+//               onClose={toggleJobForm}
+//               refreshJobs={() => setShowJobForm(false)}
+//             />
+//           )}
+//         </main>
+//       </div>
+//     </>
+//   );
+// };
+
+// export default CompanyPage;
+
+
+
+ // useEffect(() => {
+  //   if (!jobId) {
+  //     console.error("No jobId provided to LikeDisLike component.");
+  //     showError("Job ID is missing.");
+  //     return;
+  //   }
+  //   const fetchLikes = async () => {
+  //     try {
+  //       showLoading();
+  //       const response = await axios.get(`/jobs/${jobId}`);
+  //       setLikes(response.data.likes.length);
+  //       if (user) {
+  //         setIsLiked(response.data.likes.includes(user.id)); // Dynamically use the logged-in user's ID
+  //       }
+  //     } catch (err) {
+  //       showError("Error fetching likes:", err.message);
+  //     } finally {
+  //       hideLoading();
+  //     }
+  //   };
+
+  //   fetchLikes();
+  // }, [jobId, user]);
+
+  // const handleLikeDislike = async () => {
+  //   if (!user) {
+  //     showError("You need to be logged in to like or dislike a job.");
+  //     return;
+  //   }
+
+  //   try {
+  //     showLoading();
+  //     showError("");
+
+  //     const requestBody = {
+  //       userId: user._id,
+  //     };
+
+  //     if (isLiked) {
+  //       // Dislike API
+  //       const response = await axios.post(
+  //         `/jobs/${jobId}/dislike`,
+  //         requestBody
+  //       );
+  //       setLikes(response.data.likes);
+  //       setIsLiked(false);
+  //     } else {
+  //       // Like API
+  //       const response = await axios.post(`/jobs/${jobId}/like`, {
+  //         userId: user.id,
+  //       });
+  //       setLikes(response.data.likes);
+  //       setIsLiked(true);
+  //     }
+  //   } catch (err) {
+  //     console.error(err);
+  //     showError("Error updating like status.");
+  //   } finally {
+  //     hideLoading();
+  //   }
+  // };

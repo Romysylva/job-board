@@ -2,7 +2,7 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer className="footer__width  bg-gray-800 text-white items-center text-center py-3 flex justify-between px-6 py-4 flex-wrap ">
+    <footer className=" footer__width bg-gray-800 text-white items-center text-center py-3 flex justify-between px-6 py-4 flex-wrap ">
       <div className="space-x-6">
         <a href="/" className="hover:underline">
           Privacy Policy

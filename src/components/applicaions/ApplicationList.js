@@ -49,7 +49,7 @@ const ApplicationsList = () => {
   const updateStatus = async (id) => {
     try {
       const newStatus = selectedStatus[id];
-      const response = await axios.patch(
+      const response = await axios.put(
         `http://localhost:5000/api/applications/${id}/status`,
         { status: newStatus },
         {
@@ -99,10 +99,10 @@ const ApplicationsList = () => {
             {applications.map((application) => (
               <tr key={application._id}>
                 <td className="border border-gray-300 px-4 py-2">
-                  {application.job.company.name}
+                  {application.job?.company?.name}
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
-                  {application.job.title}
+                  {application.job?.title || ""}
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
                   {application.user.username}
@@ -133,8 +133,8 @@ const ApplicationsList = () => {
                     <option value="pending">Pending</option>
                     <option value="approved">Approved</option>
                     <option value="rejected">Rejected</option>
-                    <option value="rejected">Reviewed</option>
-                    <option value="rejected">Interview</option>
+                    <option value="Reviewed">Reviewed</option>
+                    <option value="Interview">Interview</option>
                   </select>
                 </td>
                 <td className="border border-gray-300 px-4 py-2">

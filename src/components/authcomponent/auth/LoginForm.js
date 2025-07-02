@@ -27,18 +27,21 @@ const LoginForm = ({ onLogin }) => {
       );
 
       if (response.data.success) {
-        // Store the JWT token and user details in localStorage
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("user", JSON.stringify(response.data.user));
 
-        // Call onLogin callback to inform parent component
         onLogin(response.data.user);
 
-        // Redirect based on user role
-        if (response.data.user.role === "admin") {
+        console.log(response.data.user);
+        console.log("User Role:", response.data.user.roles); // ✅ Log roles
+        console.log("Admin Check:", response.data.user.roles.includes("admin"));
+
+        if (response.data.user.roles.includes("admin")) {
           navigate("/dashboard");
+          console.log("Navigating to /dashboard"); // ✅ Debug log
         } else {
-          navigate("/"); // Redirect to general user dashboard
+          console.log("Navigating to /"); // ✅ Debug
+          navigate("/");
         }
       }
     } catch (error) {

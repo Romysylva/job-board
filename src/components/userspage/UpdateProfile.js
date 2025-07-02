@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-
+import { useParams } from "react-router-dom";
 const UpdateProfile = () => {
+  const { id } = useParams();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -26,7 +27,7 @@ const UpdateProfile = () => {
     }
 
     // Call API to update profile
-    fetch("/api/users/profile", {
+    fetch(`http://localhost:5000/api/users/${id}`, {
       method: "POST",
       body: formDataObj,
       headers: {

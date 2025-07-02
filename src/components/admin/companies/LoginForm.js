@@ -3,7 +3,7 @@ import axios from "../../../utils/axiosConfig"; // Replace with your axios confi
 import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../../../context/global/GlobalProvider";
 
-const LoginForm = () => {
+const LoginFormCompany = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -67,4 +67,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default LoginFormCompany;

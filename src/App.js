@@ -19,6 +19,7 @@ import LoginPage from "./components/authcomponent/pages/LoginPage";
 import PrivateRoute from "./routes/PrivateRoute";
 import GlobalError from "./context/global/GlobalError";
 import GlobalLoading from "./context/global/GlobalLoading";
+import GlobalSuccess from "./context/global/GlobalSuccess";
 import { UserProvider } from "./context/users/useUser";
 import Footer from "./components/Footer/Footer";
 import JobPage from "./jobs/loading/JobPage";
@@ -26,6 +27,7 @@ import JobPage from "./jobs/loading/JobPage";
 import DetailedPage from "./jobs/Page";
 import LoginForm from "./components/authcomponent/companyAuth/LoginForm";
 import RegisterForm from "./components/authcomponent/companyAuth/RegisterCompany";
+import LoginFormCompany from "./components/admin/companies/LoginForm";
 // Import your components
 
 const App = () => {
@@ -34,6 +36,7 @@ const App = () => {
       <UserProvider>
         <GlobalLoading />
         <GlobalError />
+        <GlobalSuccess />
         <Router>
           {/* <Layout> */}
           <Routes>
@@ -55,8 +58,8 @@ const App = () => {
             <Route path="/register" element={<RegistrationForm />} />
             <Route path="/login" element={<LoginPage />} />
 
-            <Route path="/compregister" element={<RegisterForm />} />
-            <Route path="/companylogin" element={<LoginForm />} />
+            {/* <Route path="/compregister" element={<RegisterForm />} /> */}
+            <Route path="/companylogin" element={<LoginFormCompany />} />
 
             <Route path="/jobs" element={<JobPage />} />
             {/* <Route path="/jobs" element={<DetailedPage />} /> */}

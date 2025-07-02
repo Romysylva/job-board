@@ -4,6 +4,8 @@ import axios from "../utils/axiosConfig";
 import { useGlobalContext } from "../context/global/GlobalProvider";
 import RatingStar from "./components/RatingStar";
 import LikeDisLike from "./components/LikeDisLike";
+// import useFetchUserProfile from "../components/userspage/hooks/useFetchUserProfile";
+
 import {
   FaUser,
   FaBuilding,
@@ -21,14 +23,14 @@ import {
   FaChevronUp,
 } from "react-icons/fa";
 import { Button, Typography, Box } from "@mui/material";
-import JobRating from "./components/RatingStar";
+import JobRating from "./components/JobRatings";
 import CommentForm from "../coments/CommentForm";
 import ReviewForm from "../reviews/ReviewForm";
 import Reviews from "./components/Reviews";
 import Comments from "./components/Comments";
 import { AuthProvider } from "../context/AuthProvider";
 
-const JobDetails = ({ targetId, targetType, companyId }) => {
+const JobDetails = ({ targetId, targetType, companyId, userId }) => {
   const { id } = useParams();
   const { jobId } = useParams();
   const [jobDetails, setJobDetails] = useState(null);
@@ -43,8 +45,12 @@ const JobDetails = ({ targetId, targetType, companyId }) => {
   const [viewReviews, setViewReviews] = useState(false);
   const [openComment, setOpenComment] = useState(false);
   const [applicants, setApplicants] = useState([]);
+  const [refreshkey, setRefreshKey] = useState(0);
   const navigate = useNavigate();
 
+  const handleRatingSubmit = () => {
+    setRefreshKey((prevKey) => prevKey + 1);
+  };
   const handleOpenDialog = () => setShowCommentDialog(true);
   const handleCloseDialog = () => setShowCommentDialog(false);
   const toggleReviews = () => {
@@ -186,26 +192,26 @@ const JobDetails = ({ targetId, targetType, companyId }) => {
 
   // if (!jobDetails) return <div>loading...</div>;
 
-  const handleRatingSubmit = async (rating) => {
-    try {
-      showLoading();
-      const token = localStorage.getItem("token");
-      await axios.post(
-        `http://localhost:5000/api/jobs/${id}/rate`,
-        { rating },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      showSuccess("Thank you for your feedback!");
-    } catch (err) {
-      showError("Failed to submit your rating. Please try again.");
-    } finally {
-      hideLoading();
-    }
-  };
+  // const handleRatingSubmit = async (rating) => {
+  //   try {
+  //     showLoading();
+  //     const token = localStorage.getItem("token");
+  //     await axios.post(
+  //       `http://localhost:5000/api/jobs/${id}/rate`,
+  //       { rating },
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       }
+  //     );
+  //     showSuccess("Thank you for your feedback!");
+  //   } catch (err) {
+  //     showError("Failed to submit your rating. Please try again.");
+  //   } finally {
+  //     hideLoading();
+  //   }
+  // };
 
   if (!jobDetails) {
     return <p>Loading job details...</p>;
@@ -290,32 +296,9 @@ const JobDetails = ({ targetId, targetType, companyId }) => {
               key: "applicants",
               title: "Applicants",
               icon: <FaUserAlt className="inline-block mr-2 text-blue-500" />,
-              content: jobDetails.applicants,
-              itemIcon: <FaUser className="mr-2 text-gray-700" />,
-            },
-            {
-              key: "comments",
-              title: "Comments",
-              icon: (
-                <FaCommentAlt className="inline-block mr-2 text-yellow-500" />
-              ),
-              content: jobDetails.comments,
-              itemIcon: <FaUser className="mr-2 text-gray-700" />,
-            },
-            {
-              key: "ratings",
-              title: "Ratings",
-              icon: <FaStar className="inline-block mr-2 text-orange-500" />,
-              content: jobDetails.reviews.map((review) => review.rating),
-              itemIcon: <FaStar className="text-orange-500 mr-2" />,
-            },
-            {
-              key: "reviews",
-              title: "Reviews",
-              icon: (
-                <FaCommentAlt className="inline-block mr-2 text-pink-500" />
-              ),
-              content: jobDetails.reviews.map((review) => review.comment),
+              content: jobDetails.applicants.map((applicant) => (
+                <li key={applicants._id}>{applicant.user.username}</li>
+              )),
               itemIcon: <FaUser className="mr-2 text-gray-700" />,
             },
           ].map(({ key, title, icon, content, itemIcon }) => (
@@ -350,22 +333,19 @@ const JobDetails = ({ targetId, targetType, companyId }) => {
 
           {/* Likes */}
           <div className=" ">
-            <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-              <FaStar className="inline-block mr-2 text-orange-500" /> Ratings
-            </h2>
-            <p className="flex items-center">
-              <FaStar className="text-orange-500 mr-2" /> Total Rating{" "}
-              {jobDetails.ratingsSummary.totalRatings}
-            </p>
-            <p className="flex items-center">
-              <FaStar className="text-orange-500 mr-2" /> Average Rating.{" "}
-              {jobDetails.ratingsSummary.averageRating}
-            </p>
+            {jobDetails && (
+              <JobRating jobId={jobDetails._id} refreshkey={refreshkey} />
+            )}
           </div>
           <h2 className="text-2xl font-semibold text-gray-900 mb-4">
             <FaThumbsUp className="inline-block mr-2 text-green-500" /> Likes
           </h2>
-          <p>{jobDetails.likes.length} users liked this job.</p>
+          <p>
+            {jobDetails.likes.length === 1
+              ? `${jobDetails.likes.length} user`
+              : `${jobDetails.likes.length} users`}{" "}
+            liked this job.
+          </p>
           <div className="reviews-section">
             <div className="reviews-header">
               <div>
@@ -470,7 +450,7 @@ const JobDetails = ({ targetId, targetType, companyId }) => {
                 comments.map((comment) => (
                   <div key={comment._id} className="review-item">
                     <p>
-                      <strong>Comment:</strong> {comment.comment.commentText}
+                      <strong>Comment:</strong> {comment.commentText}
                     </p>
                   </div>
                 ))
@@ -478,31 +458,42 @@ const JobDetails = ({ targetId, targetType, companyId }) => {
                 <p>Write your comment here!🆎</p>
               )}
               <LikeDisLike jobId={id} />
-              <RatingStar onSubmitRating={handleRatingSubmit} />
+              {jobDetails && (
+                <RatingStar
+                  jobId={jobDetails?._id}
+                  // userId={jobDetails.user?._id}
+                  onSubmitRating={handleRatingSubmit}
+                />
+              )}
 
               <h3>Total Applicants: {jobDetails.applicants.length || 0}</h3>
               <div className="applicants-list">
                 {jobDetails.applicants.map((applicant) => (
-                  <div key={applicant.user._id} className="applicant-card">
-                    <img
-                      src={applicant.user.profileImage}
-                      alt={`${applicant.user.name}'s profile`}
-                    />
-                    <p>{applicant.user.name}</p>
+                  <div
+                    key={applicant.user.id}
+                    className="applicant-card flex items-center gap-4"
+                  >
+                    {applicant.user.profileImage && (
+                      <span>
+                        <img
+                          src={`http://localhost:5000/${applicant.user.profileImage.replace(
+                            /\\/g,
+                            "/"
+                          )}`}
+                          // src={applicant.user.profileImage.replace(/\\/g, "/")}
+                          alt={`${applicant.user.username}'s profile`}
+                          className="w-10 h-10 rounded-full mt-4"
+                        />
+                      </span>
+                    )}
+
+                    <p className="font-bold">{applicant.user.username}</p>
                   </div>
                 ))}
               </div>
               <div>
-                {/* <button
-                  onClick={() =>
-                    jobDetails.company
-                      ? navigate(`/companies/${jobDetails.company._id}`)
-                      : showError("Company details not available.")
-                  }
-                >
-                  Apply for this Job
-                </button> */}
                 <button
+                  className="add-review-button"
                   onClick={() => {
                     if (jobDetails.company && jobDetails.company._id) {
                       navigate(`/companies/${jobDetails.company._id}`);
@@ -517,10 +508,7 @@ const JobDetails = ({ targetId, targetType, companyId }) => {
             </div>
           </div>
         </div>
-        <div>
-          {/* Other Job Details */}
-          {/* <JobRating jobId={jobId} userId={userId} /> */}
-        </div>
+        <div>{/* Other Job Details */}</div>
       </div>
     </AuthProvider>
   );

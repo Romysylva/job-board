@@ -1,4 +1,4 @@
-import { Route, Navigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthProvider";
 import React from "react";
 
@@ -8,7 +8,9 @@ const PrivateRoute = ({ element, roleRequired }) => {
   if (!user) {
     return <Navigate to="/login" replace />;
   }
-  if (roleRequired && user.role !== roleRequired) {
+  const userRoles = Array.isArray(user.roles) ? user.roles : [user.roles];
+
+  if (roleRequired && !userRoles.includes(roleRequired)) {
     return <Navigate to="/" />;
   }
 
